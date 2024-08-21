@@ -57,10 +57,11 @@ sudo apt install -y samtools
 cd ~/Downloads/
 git clone https://github.com/samtools/htslib.git
 cd htslib
-autoreconf -i
 git submodule update --init --recursive
+autoreconf -i
 ./configure
-make prefix=/home/fanta/.local/htslib
+make
+make prefix=/home/fanta/.local/htslib install
 cd ~/.local/bin
 ln -s ../htslib/bin/* .
 

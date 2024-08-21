@@ -2,7 +2,7 @@ alias ll='ls -laFh'
 alias ws='cd /home/fanta/workspace'
 alias c='clear'
 alias tm='tmux'
-alias d='cd Downloads'
+alias d='cd /home/fanta/Downloads'
 
 export PATH="/home/fanta/.local/bin:$PATH"
 
