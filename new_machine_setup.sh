@@ -6,11 +6,17 @@ mkdir -p ~/.local/bin
 mkdir -p ~/Downloads
 cd ~/Downloads || exit
 
-# sudo apt-get install -y libssl-dev
-# sudo apt-get install -y libffi-dev
+echo "Installing needed Ubuntu packages"
+sudo apt install -y build-essential
+sudo apt install -y zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev libncurses-dev tk-dev
+sudo apt install -y tabix
+sudo apt install -y python3-pip
+echo "Updating Ubuntu setup"
+sudo apt update
+sudo apt upgrade -y
 
 # unzip
-Echo "Installing unzip"
+echo "Installing unzip"
 sudo apt install -y unzip
 
 # bzip2
@@ -60,3 +66,19 @@ tar xvf SPAdes-4.0.0-Linux.tar.gz
 mv SPAdes-4.0.0-Linux ~/.local/
 cd ~/.local/bin
 ln -s ../SPAdes-4.0.0-Linux/bin/* .
+
+echo "Installing Python stuff"
+curl https://pyenv.run | bash
+pyenv install 3.12.3
+pyenv virtualenv 3.12.3 default
+pyenv activate default
+pyenv virtualenvs
+pip install --upgrade pip
+pip install snakemake
+pip install tqdm
+pip install pandas
+pip install matplotlib
+
+echo "************************************************"
+echo "* Remember to configure SRA with vdb-config -i *"
+echo "************************************************"
