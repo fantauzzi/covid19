@@ -1,7 +1,9 @@
+import os
+
 ACC='SRR10971381'
 SRA_DIR='sra'
 FASTQ_DIR='fastq'
-THREADS=16
+THREADS=os.cpu_count()
 
 rule all:
     input:
@@ -42,4 +44,4 @@ rule compress_fastq2_file:
         "seqkit stats -j {THREADS} {output}"
 
 
-spades.py -o assembly -t 16 -k 25 --rna -1 fastq/SRR10971381_1.fastq.gz -2 fastq/SRR10971381_2.fastq.gz  > spades.txt
+# spades.py -o assembly -t 16 -k 25 --rna -1 fastq/SRR10971381_1.fastq.gz -2 fastq/SRR10971381_2.fastq.gz  > spades.txt
