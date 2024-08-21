@@ -3,12 +3,13 @@ import os
 ACC='SRR10971381'
 SRA_DIR='sra'
 FASTQ_DIR='fastq'
+ASSEMBLY_DIR='assembly/'+ACC
 THREADS=os.cpu_count()
 
 rule all:
     input:
-        expand("{fastq_dir}/{acc}_1.fastq.gz", acc=ACC, fastq_dir=FASTQ_DIR),
-        expand("{fastq_dir}/{acc}_2.fastq.gz", acc=ACC, fastq_dir=FASTQ_DIR)
+        expand("{assembly_dir}/assembly_graph_with_scaffolds.gfa", assembly_dir=ASSEMBLY_DIR),
+        expand("{assembly_dir}/scaffolds.fasta", assembly_dir=ASSEMBLY_DIR)
 
 rule download_reads:
     output:
@@ -43,5 +44,22 @@ rule compress_fastq2_file:
         "bgzip -@ {THREADS} {input};"
         "seqkit stats -j {THREADS} {output}"
 
+rule assemble_genome:
+    output:
+        contigs = expand("{assembly_dir}/transcripts.fasta", assembly_dir=ASSEMBLY_DIR),
+        hard_filtered_contigs = expand("{assembly_dir}/hard_filtered_transcripts.fasta", assembly_dir=ASSEMBLY_DIR),
+        soft_filtered_contigs = expand("{assembly_dir}/soft_filtered_transcripts.fasta", assembly_dir=ASSEMBLY_DIR),
+        assembly_grap_with_scaffolds = expand("{assembly_dir}/assembly_graph_with_scaffolds.gfa", assembly_dir=ASSEMBLY_DIR)
+    input:
+        rules.compress_fastq1_file.output,
+        rules.compress_fastq2_file.output
+    shell:
+        "spades.py -o assembly -t {THREADS} -k 25 --rnaviral --checkpoints last -1 {input[0]} -2 {input[1]}  > {assembly_dir}/spades.txt"
 
-# spades.py -o assembly -t 16 -k 25 --rna -1 fastq/SRR10971381_1.fastq.gz -2 fastq/SRR10971381_2.fastq.gz  > spades.txt
+rule make_scaffolds:
+    output:
+        scaffolds = expand("{assembly_dir}/scaffolds.fasta", assembly_dir=ASSEMBLY_DIR)
+    input:
+        rules.assemble_genome.output.assembly_grap_with_scaffolds
+    shell:
+        "gfatools gfa2fa  {rules.assemble_genome.output.assembly_grap_with_scaffolds} >  {output}"

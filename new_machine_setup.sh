@@ -82,6 +82,13 @@ mv SPAdes-4.0.0-Linux ~/.local/
 cd ~/.local/bin
 ln -s ../SPAdes-4.0.0-Linux/bin/* .
 
+cd ~/.local
+git clone https://github.com/lh3/gfatools
+cd gfatools
+make
+cd ~/.local/bin
+ln -s ../gfatools/gfatools .
+
 echo "Installing Python stuff"
 cd
 curl https://pyenv.run | bash
