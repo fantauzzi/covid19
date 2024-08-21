@@ -92,7 +92,6 @@ ln -s ../gfatools/gfatools .
 echo "Installing Python stuff"
 cd
 curl https://pyenv.run | bash
-pyenv install 3.12.3
 #
 export PATH="$PATH:/home/fanta/.pyenv/bin"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -100,6 +99,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 #
+pyenv install 3.12.3
 pyenv virtualenv 3.12.3 default
 pyenv activate default
 pyenv virtualenvs

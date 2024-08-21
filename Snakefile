@@ -54,7 +54,7 @@ rule assemble_genome:
         rules.compress_fastq1_file.output,
         rules.compress_fastq2_file.output
     shell:
-        "spades.py -o assembly -t {THREADS} -k 25 --rnaviral --checkpoints last -1 {input[0]} -2 {input[1]}  > {assembly_dir}/spades.txt"
+        "spades.py -o assembly -t {THREADS} -k 25 --rnaviral --checkpoints last -1 {input[0]} -2 {input[1]}  > {ASSEMBLY_DIR}/spades.txt"
 
 rule make_scaffolds:
     output:
