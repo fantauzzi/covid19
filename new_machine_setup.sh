@@ -8,8 +8,9 @@ cd ~/Downloads || exit
 
 echo "Installing needed Ubuntu packages"
 sudo apt install -y build-essential
+sudo apt install -y autoconf
 sudo apt install -y zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev libncurses-dev tk-dev
-sudo apt install -y tabix
+# sudo apt install -y tabix
 sudo apt install -y python3-pip
 echo "Updating Ubuntu setup"
 sudo apt update
@@ -50,6 +51,16 @@ chmod a+x ~/.local/bin/datasets
 # samtools
 echo "Installing samtools"
 sudo apt install -y samtools
+
+cd ~/Downloads/
+git clone https://github.com/samtools/htslib.git
+cd htslib
+autoreconf -i
+git submodule update --init --recursive
+./configure
+make prefix=/home/fanta/.local/htslib
+cd ~/.local/bin
+ln -s ../htslib/bin/* .
 
 # bowtie2
 echo "Installing bowtie2"
