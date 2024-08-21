@@ -7,6 +7,8 @@ mkdir -p ~/Downloads
 cd ~/Downloads || exit
 
 echo "Installing needed Ubuntu packages"
+sudo add-apt-repository -y universe
+sudo apt update
 sudo apt install -y build-essential
 sudo apt install -y autoconf
 sudo apt install -y zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev libncurses-dev tk-dev
@@ -72,6 +74,7 @@ sudo apt install -y bcftools
 
 # spades 4
 echo "Installing SPAdes 4"
+cd ~/Downloads/
 wget https://github.com/ablab/spades/releases/download/v4.0.0/SPAdes-4.0.0-Linux.tar.gz
 tar xvf SPAdes-4.0.0-Linux.tar.gz
 mv SPAdes-4.0.0-Linux ~/.local/
@@ -79,8 +82,16 @@ cd ~/.local/bin
 ln -s ../SPAdes-4.0.0-Linux/bin/* .
 
 echo "Installing Python stuff"
+cd
 curl https://pyenv.run | bash
 pyenv install 3.12.3
+#
+export PATH="$PATH:/home/fanta/.pyenv/bin"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+#
 pyenv virtualenv 3.12.3 default
 pyenv activate default
 pyenv virtualenvs
