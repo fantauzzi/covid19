@@ -75,7 +75,7 @@ rule extract_longest_contigs:
         # This could also be done with seqkit
         "python sort_contigs.py --n 10 --input {input} --output {output}"
 
-rule reverese_complement_1st_contig:
+rule reverse_complement_1st_contig:
     output:
         first_contig = expand("{assembly_dir}/transcript1.fasta", assembly_dir=ASSEMBLY_DIR),
     input:
