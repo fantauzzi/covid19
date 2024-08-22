@@ -89,6 +89,13 @@ make
 cd ~/.local/bin
 ln -s ../gfatools/gfatools .
 
+cd ~/.local
+git clone https://github.com/lh3/seqtk.git
+cd seqtk
+make
+cd ~/.local/bin
+ln -s ../seqtk/seqtk .
+
 echo "Installing Python stuff"
 cd
 curl https://pyenv.run | bash
@@ -108,6 +115,15 @@ pip install snakemake
 pip install tqdm
 pip install pandas
 pip install matplotlib
+
+cd ~/.local
+sudo apt install -y libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl
+sudo apt install cpanminus
+echo "yes" | sudo cpan Bio::Perl
+git clone https://github.com/tseemann/prokka.git $HOME/.local/prokka
+$HOME/.local/prokka/bin/prokka --setupdb
+cd ~/.local/bin
+ln -s ../prokka/bin/* .
 
 echo "************************************************"
 echo "* Remember to configure SRA with vdb-config -i *"

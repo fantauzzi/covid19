@@ -8,8 +8,10 @@ THREADS=os.cpu_count()
 
 rule all:
     input:
-        expand("{assembly_dir}/assembly_graph_with_scaffolds.gfa", assembly_dir=ASSEMBLY_DIR),
-        expand("{assembly_dir}/scaffolds.fasta", assembly_dir=ASSEMBLY_DIR)
+        # expand("{assembly_dir}/assembly_graph_with_scaffolds.gfa", assembly_dir=ASSEMBLY_DIR),
+        expand("{assembly_dir}/scaffolds.fasta", assembly_dir=ASSEMBLY_DIR),
+        # expand("{assembly_dir}/transcripts.sorted.fasta", assembly_dir=ASSEMBLY_DIR),
+        expand("{assembly_dir}/transcript1.fasta", assembly_dir=ASSEMBLY_DIR)
 
 rule download_reads:
     output:
@@ -63,3 +65,27 @@ rule make_scaffolds:
         rules.assemble_genome.output.assembly_grap_with_scaffolds
     shell:
         "gfatools gfa2fa  {rules.assemble_genome.output.assembly_grap_with_scaffolds} >  {output}"
+
+rule extract_longest_contigs:
+    output:
+        longest_contigs = expand("{assembly_dir}/transcripts.sorted.fasta", assembly_dir=ASSEMBLY_DIR),
+    input:
+        rules.assemble_genome.output.contigs
+    shell:
+        # This could also be done with seqkit
+        "python sort_contigs.py --n 10 --input {input} --output {output}"
+
+rule reverese_complement_1st_contig:
+    output:
+        first_contig = expand("{assembly_dir}/transcript1.fasta", assembly_dir=ASSEMBLY_DIR),
+    input:
+        rules.extract_longest_contigs.output
+    shell:
+        # Why on Earth does tsnakemake stop on the ne---xt (commented) line, when its exit code is 0??
+        # "seqkit seq -t dna -v -r -p {input} | seqkit head -n 1 > {output}"
+        # Workaround below
+        "seqkit seq -t dna -v -r -p {input}  > {ASSEMBLY_DIR}/tmp.fasta; "
+        "seqkit head -n 1 {ASSEMBLY_DIR}/tmp.fasta > {output}; "
+        "rm {ASSEMBLY_DIR}/tmp.fasta"
+
+
