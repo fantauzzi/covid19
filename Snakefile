@@ -88,4 +88,13 @@ rule reverse_complement_1st_contig:
         "seqkit head -n 1 {ASSEMBLY_DIR}/tmp.fasta > {output}; "
         "rm {ASSEMBLY_DIR}/tmp.fasta"
 
+# Note to self: make renamed FASTA file, input to prokka
 
+"""
+rule annotate_with_prokka
+    output:
+        first_contig = expand("{assembly_dir}/prokka/prokka.gff", assembly_dir=ASSEMBLY_DIR),
+    input:
+
+          prokka --kingdom Viruses --force --outdir assembly/SRR10971381/prokka --prefix prokka assembly/SRR10971381/transcript1.renamed.fasta
+"""

@@ -116,6 +116,20 @@ pip install tqdm
 pip install pandas
 pip install matplotlib
 
+# Note: for this version of parallel to be invoked instead of the system-wide one, ~/.local/bin must be at the
+# beginning of the PATH
+cd ~/Downloads/
+wget https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
+tar xvf parallel-latest.tar.bz2
+cd parallel-20240822
+./configure --prefix=$HOME/.local
+make
+make install
+
+# Next up installs (also) a recent version of tbl2asn, needed by prokka
+sudo apt install -y ncbi-tools-bin
+
+# prokka needs ncbi-tools-bin and a recent version of parallel, see above
 cd ~/.local
 sudo apt install -y libdatetime-perl libxml-simple-perl libdigest-md5-perl git default-jre bioperl
 sudo apt install cpanminus
@@ -124,6 +138,7 @@ git clone https://github.com/tseemann/prokka.git $HOME/.local/prokka
 $HOME/.local/prokka/bin/prokka --setupdb
 cd ~/.local/bin
 ln -s ../prokka/bin/* .
+
 
 echo "************************************************"
 echo "* Remember to configure SRA with vdb-config -i *"
