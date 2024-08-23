@@ -139,7 +139,6 @@ $HOME/.local/prokka/bin/prokka --setupdb
 cd ~/.local/bin
 ln -s ../prokka/bin/* .
 
-
 echo "************************************************"
 echo "* Remember to configure SRA with vdb-config -i *"
 echo "************************************************"

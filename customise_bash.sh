@@ -16,5 +16,5 @@ eval "$(pyenv init -)"
 
 export MY_VENV="default"
 if [ "$PYENV_VERSION" != "$MY_VENV" ]; then
-    pyenv activate $MY_VENV
+  pyenv activate $MY_VENV
 fi
